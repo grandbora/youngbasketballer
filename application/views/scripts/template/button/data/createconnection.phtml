@@ -1,0 +1,65 @@
+<?php
+$buttonHtmlId = $this->createConnectionDialogData['buttonHtmlId'];
+$text = $this->createConnectionDialogData['text'];
+$title = $text = $this->createConnectionDialogData['title'];
+$header = $text = $this->createConnectionDialogData['header'];
+$targetUser = $this->createConnectionDialogData['targetUser'];
+$disableDayList = $this->createConnectionDialogData['disableDayList'];
+$isRequest = $this->createConnectionDialogData['isRequest'];
+$contractDayList = $this->createConnectionDialogData['contractDayList'];
+$dialogHtmlId = 'createConnectionDialog_' . $buttonHtmlId;
+?>
+<div class="createConnection dialog" id="<?=$dialogHtmlId?>">
+<div class="ui-state-error ui-corner-all header">
+<div class="ui-icon ui-icon-alert horizontal"></div>
+<div class="horizontal"><?=$header;?></div>
+</div>
+<?php
+if (false === $isRequest)
+{
+    ?>
+<div class="dayListHeader">
+Please select training days
+</div>
+<div class="dayList">
+<?php
+    $disabled = null;
+    if (true === $disableDayList)
+        $disabled = 'disabled="disabled"';
+    foreach (YBCore_Utility_StringFormatter::$dayNameList as $index => $dayName)
+    {
+        $checked = null;
+        if (true === $disableDayList && true === in_array($index, $contractDayList))
+            $checked = 'checked="checked"';
+        ?>
+    <input type="checkbox" <?=$disabled;?> <?=$checked;?>
+	value="<?=$index;?>" id="day<?=$index;?>" /><label
+	for="day<?=$index;?>"><?=$dayName?></label>
+<?php
+    }
+    ?>
+</div>
+<div id="salary">Salary : <input type="text" name="salary" /> $ per training</div>
+<?php
+} else
+{
+    ?>
+    <div class="connection"></div>
+    <?php
+}
+?>
+</div>
+
+<script type="text/javascript">
+<?php
+// output json
+$createConnectionData = new stdClass();
+$createConnectionData->dialogId = $dialogHtmlId;
+$createConnectionData->text = $text;
+$createConnectionData->title = $title;
+$createConnectionData->targetUserId = $targetUser->getId();
+$createConnectionData->postUrl = "/readydata/createconnection";
+$createConnectionJsonData = Zend_Json::encode($createConnectionData);
+?>
+$('#<?=$buttonHtmlId?>').data('data',<?=$createConnectionJsonData?>);
+</script>

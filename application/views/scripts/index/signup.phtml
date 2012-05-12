@@ -1,0 +1,165 @@
+<?php
+
+// @todo use roudabout jquery HERE
+// http://fredhq.com/projects/roundabout#api
+$this->headScript()->appendFile('/public/js/index/signup.js');
+
+$playerText = <<<EOT
+		<h3>
+			<a href="#">Player</a>
+		</h3>
+		<div>
+			<h4>Have you ever wanted to be the most valuable player of the
+				league? Now you have the chance! Pick your position and start
+				playing.</h4>
+			<p>Hire coaches to improve your skills, get the highest paid offers
+				to boost your income, challenge other players on 1v1 games.</p>
+			<div class="accordion position">
+				<h3>
+					<a href="#">Guard</a>
+				</h3>
+				<div>
+					<div class="horizontal">
+						<p>Guard is typically the team's best ball handler and passer.
+							They are often responsible for directing plays and passing the
+							ball. This lends the player a role similar to a captain, as good
+							guards increase team efficiency and generally have a high number
+							of assists.</p>
+					</div>
+					<div class="horizontal">
+						<b class="button guard">GO</b>
+					</div>
+				</div>
+				<h3>
+					<a href="#">Forward</a>
+				</h3>
+				<div>
+					<div class="horizontal">
+						<p>Forward is typically shorter, quicker and leaner than centers.
+							Forwards have a variety of weapons, such as quickness and
+							strength inside. One common thread between all kinds of small
+							forwards is an ability to "get to the line" and draw fouls by
+							aggressively attempting post-up plays, lay-ups, or slam dunks.</p>
+					</div>
+					<div class="horizontal">
+						<b class="button forward">GO</b>
+					</div>
+				</div>
+				<h3>
+					<a href="#">Center</a>
+				</h3>
+				<div>
+					<div class="horizontal">
+						<p>The center is normally the tallest player on the team, and
+							often has a great deal of strength and body mass as well. In many
+							cases, the center's primary role is to use his or her size to
+							score and defend from a position close to the basket.</p>
+					</div>
+					<div class="horizontal">
+						<b class="button center">GO</b>
+					</div>
+				</div>
+			</div>
+		</div>
+EOT;
+
+$coachText = <<<EOT
+		<h3>
+			<a href="#">Coach</a>
+		</h3>
+		<div>
+			<div class="horizontal">
+				<h4>Be the brain behind your teams offense and defense tactics!</h4>
+				<p>Scout for new talents , decide your line up and face your rivals.
+					Coach other players to boost your income. Buy perks to improve your
+					skills. Become the most wanted coach in the league</p>
+			</div>
+			<div class="horizontal">
+				<b class="button coach">GO</b>
+			</div>
+		</div>
+EOT;
+
+$teamOwnerText = <<<EOT
+		<h3>
+			<a href="#">Team Owner</a>
+		</h3>
+		<div>
+			<div class="horizontal">
+				<h4>Create your team and run your franchise!</h4>
+				<p>Run the budget of the team, make highest bids to transfer the
+					best talent in the league, arrange games to make revenue. Make the
+					best business out of your team.</p>
+				<h4 class="attention">Type in your team name and start playing.</h4>
+				<p>
+					My team name is <input maxlength="49" type="text"
+						class="watermarked" title="team name" /> <i>(must be at least five
+						letters)</i>
+				</p>
+			</div>
+			<div class="horizontal">
+				<b class="button teamOwner">GO</b>
+			</div>
+		</div>
+EOT;
+?>
+<div class="selection">
+	<h2 class="title">Let's create your avatar</h2>
+	<div class="accordion type">
+        <?=$playerText;?>
+        <?=$coachText;?>
+        <?=$teamOwnerText;?>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+
+		$(".accordion.type").accordion({
+			event: "click hoverintent"
+		});
+		
+		$(".accordion.position").accordion({
+			event: "click hoverintent",
+			autoHeight: false
+		});
+
+		$('.button.teamOwner').button("option", "disabled", true);
+		$(document).on('keyup', '.watermarked', function() { 
+			setTeamOwnerButton(this);
+		});
+
+		$(document).on('click', '.button', function() {
+
+			// dont take action if disabled //for teamOwner
+			if (true == $(this).button("option", "disabled"))
+				return;
+
+			$('<div>').addClass('dialog').addClass('loader').callDialog({
+				preventClose : true,
+				draggable : false,
+				resizable : false,
+				minHeight : 100,
+				title : 'Loading...'
+			});
+			 
+			var type = null;
+			var position = null;
+            if (true == $(this).hasClass('guard')) {
+            	type =<?=YBCore_Model_User_Mapper_Player::TYPE?>;
+            	position =<?=YBCore_Model_User_Mapper_Player::POSITION_GUARD?>;
+            } else if(true == $(this).hasClass('forward')) {
+            	type =<?=YBCore_Model_User_Mapper_Player::TYPE?>;
+            	position =<?=YBCore_Model_User_Mapper_Player::POSITION_FORWARD?>;
+            } else if(true == $(this).hasClass('center')) {
+            	type =<?=YBCore_Model_User_Mapper_Player::TYPE?>;
+            	position =<?=YBCore_Model_User_Mapper_Player::POSITION_CENTER?>;
+            } else if(true == $(this).hasClass('coach')) {
+            	type =<?=YBCore_Model_User_Mapper_Coach::TYPE?>;
+            } else if(true == $(this).hasClass('teamOwner')) {
+            	type =<?=YBCore_Model_User_Mapper_TeamOwner::TYPE?>;
+            }
+
+            createUser(type, position);
+		});
+	});
+</script>

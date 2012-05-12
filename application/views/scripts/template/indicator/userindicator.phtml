@@ -1,0 +1,59 @@
+<?php
+$user = $this->userIndicatorData['user'];
+$imageType = $this->userIndicatorData['imageType'];
+$nameType = $this->userIndicatorData['nameType'];
+$enableLink = $this->userIndicatorData['enableLink'];
+$sendToFbProfile = $this->userIndicatorData['sendToFbProfile'];
+$cssClass = $this->templateCssClass;
+$userClass = lcfirst(end(explode("_", get_class($user))));
+
+$className = 'userIndicator horizontal ' . $cssClass . ' ' . $userClass;
+
+if (true === $enableLink)
+    $className .= ' indicatorLink';
+if (Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE !== $imageType)
+{
+    $imageSrc = $this->facebook->getUrl('graph', $user->getFbId() . '/picture', array('type' => $imageType));
+    $className .= ' ' . $imageType;
+}
+if (Zend_View_Helper_RenderViewHelper::NAMETYPE_NONE !== $nameType)
+{
+    $className .= ' withName';
+}
+?>
+
+<?php
+if (true === $enableLink)
+{
+    $target = false === $sendToFbProfile ? "href = \"/profile/userschedule?id=". $user->getId()."\"" : "href = \"". $user->getFbLink()."\" target=\"_blank\""; 
+    
+    ?>
+<a class="userIndicator" <?=$target;?>">
+    <?php
+}
+?>
+<div class="userIndicatorData <?=$className;?>">
+<?php
+if (Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE !== $imageType)
+{
+    ?> 
+	<img class="horizontal" src="<?=$imageSrc;?>">
+    <?php
+}
+
+if (Zend_View_Helper_RenderViewHelper::NAMETYPE_NONE !== $nameType)
+{
+    ?>
+    <span class="userIndicatorText"><?=$user->getFbName($nameType);?></span>
+    <?php
+}
+?>
+</div>
+<?php
+if (true === $enableLink)
+{
+    ?> 
+	</a>
+<?php
+}
+?>

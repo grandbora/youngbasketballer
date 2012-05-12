@@ -1,0 +1,8 @@
+<?php
+$sideBar = $this->render('template/sidebar/member.phtml');
+$teamOwnerGrid = $this->renderViewHelper()->userGrid($this->teamOwnerList, 'Team Owners');
+?>
+<div class="sideBar horizontal"><?=$sideBar?></div>
+<div class="mainContent horizontal">
+<div class="teamOwnerGrid section"><?=$teamOwnerGrid?></div>
+</div>

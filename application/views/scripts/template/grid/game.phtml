@@ -1,0 +1,44 @@
+<?php
+$gameList = $this->gameGridData['gameList'];
+
+$infoText = $this->textHelper()->getGameViewInfoText($this->loginUser);
+$sectionHeader = $this->renderViewHelper('gameViewHeader', 'withMarginTop')->sectionHeader("Upcoming Games", $infoText);
+?>
+
+<?=$sectionHeader;?>
+<table class="gameGrid">
+<?php
+if (false === empty($gameList))
+{
+    ?>
+	<tr class="game">
+		<th class="homeCell" colspan="2">Home</th>
+		<th></th>
+		<th class="awayCell" colspan="2">Away</th>
+	</tr>
+<?php
+    foreach ($gameList as $game)
+    {
+        $rowClassName = null;
+        if ($game->getHomeTeamId() === $this->loginUser->getTeamId() || $game->getAwayTeamId() === $this->loginUser->getTeamId())
+            $rowClassName = "ownTeam";
+        ?>
+    <tr class="game <?=$rowClassName;?>">
+		<td class="homeCell ui-widget-content ui-corner-left"><?=$this->renderViewHelper()->teamIndicator($game->getHomeTeam());?></td>
+		<td class="homeRosterCell ui-widget-content"><?=$this->renderViewHelper()->teamRoster($game->getHomeTeam());?></td>
+		<td class="versusCell ui-widget-content">VS</td>
+		<td class="awayRosterCell ui-widget-content"><?=$this->renderViewHelper()->teamRoster($game->getAwayTeam());?></td>
+		<td class="awayCell ui-widget-content ui-corner-right"><?=$this->renderViewHelper()->teamIndicator($game->getAwayTeam());?></td>
+	</tr>
+    <?php
+    }
+} else
+{
+    ?>
+<tr class="game noData helperLine">
+		<td>There aren't any games at the moment.</td>
+	</tr>
+<?php
+}
+?>
+</table>

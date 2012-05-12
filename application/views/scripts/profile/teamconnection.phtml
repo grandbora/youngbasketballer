@@ -1,0 +1,17 @@
+<?php
+$observedTeam = $this->observedTeam;
+$sideBar = $this->renderViewHelper()->sidebar($observedTeam);
+$header = $this->renderViewHelper()->header($observedTeam);
+$contractList = $this->renderViewHelper()->connectionListView($observedTeam, YBCore_Model_Connection_Mapper_Contract::STATUS);
+$offerList = $this->renderViewHelper()->connectionListView($observedTeam, YBCore_Model_Connection_Mapper_Offer::STATUS);
+$transferRequestList = $this->renderViewHelper()->requestListView($observedTeam, $observedTeam->getTransferRequestList(), "Transfer List");
+$dismissRequestList = $this->renderViewHelper()->requestListView($observedTeam, $observedTeam->getDismissRequestList(), "Dismiss List");
+?>
+<div class="sideBar horizontal"><?=$sideBar?></div>
+<div class="mainContent horizontal">
+<div class="profileHeader"><?=$header?></div>
+<div class="connectionList section"><?=$contractList?></div>
+<div class="connectionList section"><?=$offerList?></div>
+<div class="requestList section horizontal left"><?=$transferRequestList?></div>
+<div class="requestList section horizontal right"><?=$dismissRequestList?></div>
+</div>

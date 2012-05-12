@@ -1,0 +1,8 @@
+<?php
+$sideBar = $this->render('template/sidebar/league.phtml');
+$challengeGrid = $this->renderViewHelper()->challengeGrid($this->challengeList);
+?>
+<div class="sideBar horizontal"><?=$sideBar?></div>
+<div class="mainContent horizontal">
+<div class="challengeView section"><?=$challengeGrid?></div>
+</div>

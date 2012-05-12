@@ -1,0 +1,82 @@
+<?php
+$id = $this->requestListViewData['id'];
+$requestList = $this->requestListViewData['requestList'];
+$observedTeam = $this->requestListViewData['observedTeam'];
+$title = $this->requestListViewData['title'];
+
+$informationText = null;
+if (false === empty($requestList))
+{
+    $ownerIndicator = null;
+    if ($observedTeam->getOwnerId() !== $this->loginUser->getId())
+        $ownerIndicator = $this->renderViewHelper()->userIndicator($observedTeam->getOwner(), Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST, 
+        false);
+    $coachList = $observedTeam->getCoachList();
+    $coachIndicator = null;
+    if ( $coachList[0]->getId() !== $this->loginUser->getId())
+        $coachIndicator = $this->renderViewHelper()->userIndicator($coachList[0], Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST, false);
+    
+    $informationText = $this->textHelper()->getRequestListInformation($title, $ownerIndicator, $coachIndicator, count($requestList) > 1);
+}
+$sectionHeader = $this->renderViewHelper('requestListHeader')->sectionHeader($title, $informationText);
+?>
+
+<?=$sectionHeader;?>
+
+<table cellpadding="0" cellspacing="0" border="0"
+	class="requestListView">
+<?php
+
+$observedTeamIndicator = null;
+$userTypeCheck = true === $this->loginUser instanceof YBCore_Model_User_TeamOwner || true === $this->loginUser instanceof YBCore_Model_User_Coach;
+if (false === $userTypeCheck || $observedTeam->getId() !== $this->loginUser->getTeamId())
+    $observedTeamIndicator = $this->renderViewHelper("horizontal")->teamIndicator($observedTeam, false);
+$noDataText = $this->textHelper()->getRequestListNoDataText($observedTeamIndicator, strtolower($title));
+
+for ($i = 0; $i < count($requestList); $i++)
+{
+    $request = $requestList[$i];
+    $rowHtmlId = 'request_' . $id . '_' . $i;
+    $participant = $this->renderViewHelper()->userIndicator($request->getEmployee(), Zend_View_Helper_RenderViewHelper::IMAGETYPE_SQUARE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST);
+    
+    $requestJsonData = new stdClass();
+    $requestJsonData->noDataText = $noDataText;
+    $requestJsonDataString = Zend_Json::encode($requestJsonData);
+    ?>
+	<tr class="request" id="<?=$rowHtmlId;?>">
+		<td class="buttonCell ui-widget-content ui-corner-left">
+            <?=$this->renderButtonHelper()->removeConnectionButton($this->loginUser, $observedTeam, $request);?>
+		</td>
+		<td class="participant ui-widget-content"><?=$participant;?></td>
+		<td class="buttonCell ui-widget-content ui-corner-right">
+			<?=$this->renderButtonHelper()->executeRequestButton($this->loginUser, $request);?>
+		</td>
+	</tr>
+	<script type="text/javascript"> 
+	$('.request#<?=$rowHtmlId;?>').data('data',<?=$requestJsonDataString;?>);
+</script>
+<?php
+}
+
+if (true === empty($requestList))
+{
+    ?>
+    	<tr class="request noData helperLine">
+		<td><?=$noDataText?></td>
+	</tr>
+    <?php
+}
+?>
+</table>
+<?php
+if (0 === $id)
+{
+    ?>
+<script type="text/javascript">
+$(document).ready(function() {
+	setUpRequestListButtons();
+});
+</script>
+<?php
+}
+?>

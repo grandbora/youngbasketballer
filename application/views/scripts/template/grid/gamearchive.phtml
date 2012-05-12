@@ -1,0 +1,58 @@
+<?php
+$resultList = $this->gameArchiveData['resultList'];
+$observedTeam = $this->gameArchiveData['observedTeam'];
+
+$sectionHeader = $this->renderViewHelper('gameArchiveHeader')->sectionHeader("Played Games");
+?>
+
+<?=$sectionHeader;?>
+
+<table class="gameArchiveGrid modelListGrid">
+<?php
+if (false === empty($resultList))
+{
+    ?>
+	<tr class="result model">
+		<th class="date">Date</th>
+		<th class="name">Opponent</th>
+		<th class="revenue">Generated Revenue ($)</th>
+		<th class="result">Result</th>
+	</tr>
+<?php
+    foreach ($resultList as $result)
+    {
+        $rowClassName = null;
+        $opponent = null;
+        $gameResult = null;
+        if ($result->getWinnerTeamId() === $observedTeam->getId())
+        {
+            $rowClassName = 'win';
+            $gameResult = 'W';
+            $opponent = $this->renderViewHelper()->teamIndicator($result->getLoserTeam());
+        } else
+        {
+            $rowClassName = 'lose';
+            $gameResult = 'L';
+            $opponent = $this->renderViewHelper()->teamIndicator($result->getWinnerTeam());
+        }
+        
+        ?>
+    <tr class="result model <?=$rowClassName;?>">
+		<td class="date firstCell ui-widget-content ui-corner-left"><?=$result->getGameDate();?></td>
+		<td class="name middleCell ui-widget-content"><?=$opponent;?></td>
+		<td class="revenue middleCell ui-widget-content"><?=$result->getRevenue();?></td>
+		<td class="result lastCell ui-widget-content ui-corner-right"><?=$gameResult;?></td>
+	</tr>
+    <?php
+    }
+} else
+{
+    $team = $this->renderViewHelper("horizontal")->teamIndicator($observedTeam, false);
+    ?>
+<tr class="result noData helperLine">
+		<td><?=$team;?> has not played any games yet.</td>
+	</tr>
+<?php
+}
+?>
+</table>

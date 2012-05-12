@@ -1,0 +1,24 @@
+<?php
+$teamList = $this->teamGridData['teamList'];
+
+$sectionHeader = $this->renderViewHelper('teamViewHeader', 'withMarginTop')->sectionHeader("Teams");
+?>
+
+<?=$sectionHeader;?>
+<table class="modelListGrid teamGrid">
+	<tr class="model team">
+		<th class="name firstCell">Name</th>
+		<th class="roster">Roster</th>
+	</tr>
+<?php
+foreach ($teamList as $team)
+{
+    ?>
+    <tr class="model team">
+		<td class="name firstCell ui-widget-content ui-corner-left"><?=$this->renderViewHelper()->teamIndicator($team);?></td>
+		<td class="roster lastCell ui-widget-content ui-corner-right"><?=$this->renderViewHelper()->teamRoster($team);?></td>
+	</tr>
+    <?php
+}
+?>
+</table>

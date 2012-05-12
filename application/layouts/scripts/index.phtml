@@ -1,0 +1,36 @@
+<?php
+$this->headMeta()->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
+$this->headLink()->appendStylesheet('/public/css/jquery-ui-1.8.16.custom.css');
+$this->headLink()->appendStylesheet('/public/css/global.css');
+$this->headLink()->appendStylesheet('/public/css/index.css');
+$this->headScript()->prependFile('/public/js/fb.js');
+$this->headScript()->prependFile('/public/js/lib.js');
+$this->headScript()->prependFile('/public/js/jquery-ui-1.8.16.custom.min.js');
+$this->headScript()->prependFile('/public/js/jquery-1.7.1.min.js');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>YoungBasketballer</title>
+<script type="text/javascript">
+fbAppId = <?=Zend_Registry::get('config')->facebook->appId; ?>
+<?php if(Zend_Registry::get('config')->debug == false) : ?>
+if (top === self) { 
+	// check if we are in fb iframe
+	window.location = "<?=$this->facebookUrl;?>";
+}
+<?php endif; ?>
+</script>
+<?php
+echo $this->headMeta();
+echo $this->headLink();
+echo $this->headScript();
+?>
+</head>
+<body>
+	<div class="signUp">
+	<?=$this->layout()->content;?>
+	</div>
+	<div id="fb-root"></div>
+</body>
+</html>

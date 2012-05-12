@@ -1,0 +1,35 @@
+<?php
+$imageType = $this->userIndicatorData['imageType'];
+$nameType = $this->userIndicatorData['nameType'];
+$cssClass = $this->templateCssClass;
+
+$className = 'userIndicator horizontal ' . $cssClass . ' ' . 'dummy';
+
+if (Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE !== $imageType)
+{
+    $imageSrc = "/css/images/dummy/".rand(1,6).".gif";
+    $className .= ' ' . $imageType;
+}
+if (Zend_View_Helper_RenderViewHelper::NAMETYPE_NONE !== $nameType)
+{
+    $className .= ' withName';
+}
+?>
+
+<div class="userIndicatorData <?=$className;?>">
+<?php
+if (Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE !== $imageType)
+{
+    ?> 
+	<img class="horizontal" src="<?=$imageSrc;?>">
+    <?php
+}
+
+if (Zend_View_Helper_RenderViewHelper::NAMETYPE_NONE !== $nameType)
+{
+    ?>
+    <span class="userIndicatorText">AI Player</span>
+    <?php
+}
+?>
+</div>

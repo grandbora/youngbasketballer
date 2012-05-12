@@ -1,0 +1,17 @@
+<?php
+$user = $this->loginUser;
+$userIndicator = $this->renderViewHelper("link")->userIndicator($user, Zend_View_Helper_RenderViewHelper::IMAGETYPE_SQUARE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST);
+?>
+
+<?
+echo $userIndicator;
+if (null !== $user->getTeamId())
+    echo $this->renderViewHelper("link")->teamIndicator($user->getTeam());
+?>
+<a href="/league/player">
+<div class="link horizontal">Members</div>
+</a>
+<a href="/league/challenge">
+<div class="link horizontal">League</div>
+</a>
+

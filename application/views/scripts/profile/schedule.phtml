@@ -1,0 +1,17 @@
+<?php
+$sideBar = $this->renderViewHelper()->sidebar($this->observedModel);
+$header = $this->renderViewHelper()->header($this->observedModel);
+$schedule = $this->renderViewHelper()->weekView($this->eventList, $this->observedModel, "Upcoming Events");
+$program = $this->renderViewHelper()->trainingProgram($this->observedModel);
+
+$gameArchive = null;
+if ($this->observedModel instanceof YBCore_Model_Team)
+    $gameArchive = $this->renderViewHelper()->gameArchive($this->resultList, $this->observedModel);
+?>
+<div class="sideBar horizontal"><?=$sideBar;?></div>
+<div class="mainContent horizontal">
+<div class="profileHeader"><?=$header;?></div>
+<div class="schedule section"><?=$schedule;?></div>
+<div class="program section"><?=$program;?></div>
+<div class="gameArchive section"><?=$gameArchive;?></div>
+</div>

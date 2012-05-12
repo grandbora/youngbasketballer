@@ -1,0 +1,8 @@
+<?php
+$sideBar = $this->render('template/sidebar/member.phtml');
+$coachGrid = $this->renderViewHelper()->userGrid($this->coachList, 'Coaches');
+?>
+<div class="sideBar horizontal"><?=$sideBar?></div>
+<div class="mainContent horizontal">
+<div class="coachGrid section"><?=$coachGrid?></div>
+</div>

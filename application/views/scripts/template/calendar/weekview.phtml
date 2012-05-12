@@ -1,0 +1,109 @@
+<?php
+$id = $this->weekViewData['id'];
+$eventList = $this->weekViewData['eventList'];
+$observedModel = $this->weekViewData['observedModel'];
+$title = $this->weekViewData['title'];
+$showDate = $this->weekViewData['showDate'];
+$showEmptyscheduleAlert = true;
+
+$sectionHeader = null;
+if (false === empty($title))
+    $sectionHeader = $this->renderViewHelper('weekViewHeader')->sectionHeader($title);
+?>
+
+<?=$sectionHeader;?>
+<div class="eventList">
+<?php
+for ($i = 0; $i < count($eventList); $i++)
+{
+    $eventDay = $eventList[$i];
+    $dayName = YBCore_Utility_StringFormatter::getDayName($eventDay['day']);
+    $eventDayClassName = $this->textHelper()->getWeekViewEventDayClassName($eventDay['day'], empty($eventDay['event']));
+    $eventDayHtmlId = 'eventDay_' . $id . '_' . $eventDay['day'];
+    
+    //prepare json data
+    $eventDayJsonData = new stdClass();
+    $eventDayJsonData->url = "/readyview/weekviewdialog";
+    $eventDayJsonData->id = $eventDayHtmlId;
+    $eventDayJsonData->dayName = $dayName;
+    if (true === $showDate)
+        $eventDayJsonData->date = YBCore_Utility_DateTime::calculateDate($i, 'd/m/Y');
+    $eventDayJsonData->eventList = array();
+    ?>
+		<div id="<?=$eventDayHtmlId;?>"
+	class="eventDay <?=$eventDayClassName;?> horizontal ui-widget-content ui-corner-all">
+<h5 class="dayNameHeader ui-widget-header ui-corner-top"><?=$dayName;?></h5>
+	<?php
+    if (true === empty($eventDay['event']))
+    {
+        ?>
+<div class="eventTitle">No activities this day</div>
+    <?php
+    } else
+    {
+        $showEmptyscheduleAlert = false;
+        foreach ($eventDay['event'] as $event)
+        {
+            $eventTextDataList = $this->textHelper()->getEventTextDataList($event);
+            $eventTitle = $eventTextDataList['title'];
+            $eventTitleClassName = $eventTextDataList['cssClass'];
+            
+            //prepare json data
+            $eventJsonData = new stdClass();
+            $eventJsonData->class = get_class($event);
+            if ($event instanceof YBCore_Model_Event_Game_Abstract)
+            {
+                $eventJsonData->id = $event->getId();
+            } elseif ($event instanceof YBCore_Model_Event_Training)
+            {
+                $eventJsonData->contractId = $event->getContract()->getId();
+                $eventJsonData->dayId = $eventDay['day'];
+            }
+            $eventDayJsonData->eventList[] = $eventJsonData;
+            ?>
+<div class="eventTitle <?=$eventTitleClassName;?>"><?=$eventTitle;?></div>
+    <?php
+        }
+    }
+    $eventDayJsonDataString = Zend_Json::encode($eventDayJsonData);
+    ?>
+    </div>
+<script type="text/javascript">
+	$('#<?=$eventDayHtmlId;?>.eventDay').data('data',<?=$eventDayJsonDataString;?>);
+</script>
+    <?php
+}
+?> 
+</div>
+<?php
+// loading once is enough
+// since this code runs on ready we can not move it to external file
+if (0 === $id)
+{
+    $observeUserAlertCase = true === $observedModel instanceof YBCore_Model_User_Abstract && $observedModel->getId() === $this->loginUser->getId();
+    $observeTeamAlertCase = true === $observedModel instanceof YBCore_Model_Team && $observedModel->getOwnerId() === $this->loginUser->getId();
+    if (true === $showEmptyscheduleAlert && ($observeUserAlertCase || $observeTeamAlertCase))
+    {
+        $loginUserIndicator = $this->renderViewHelper()->userIndicator($this->loginUser, Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST, false);
+        $emptyScheduleAlertData = new stdClass();
+        $emptyScheduleAlertData->title = "Hi " . $loginUserIndicator;
+        $emptyScheduleAlertData->content = $this->textHelper()->getEmptyScheduleAlertMessage($this->loginUser);
+        $emptyScheduleAlertJsonData = Zend_Json::encode($emptyScheduleAlertData);
+    }
+    ?>
+<script type="text/javascript">
+$(document).on('ready',function() {
+	$('.eventList').weekView('.eventList .eventDay:not(.freeDay)');
+	<?php
+    if (true === $showEmptyscheduleAlert && ($observeUserAlertCase || $observeTeamAlertCase))
+    {
+        ?>
+        $('.weekViewHeader.sectionHeader').weekView('alertEmptySchedule',<?=$emptyScheduleAlertJsonData?>);
+	<?php
+    }
+    ?>
+});
+</script>
+<?php
+}
+?>

@@ -1,0 +1,28 @@
+<?php
+$buttonHtmlId = $this->removeConnectionDialogData['buttonHtmlId'];
+$title = $this->removeConnectionDialogData['title'];
+$header = $this->removeConnectionDialogData['header'];
+$connection = $this->removeConnectionDialogData['connection'];
+$dialogHtmlId = 'removeConnectionDialog_' . $buttonHtmlId;
+?>
+<div class="removeConnection dialog" id="<?=$dialogHtmlId;?>">
+
+<div class="ui-state-error ui-corner-all header">
+<div class="ui-icon ui-icon-alert horizontal"></div>
+<div class="horizontal"><?=$header;?></div>
+</div>
+<div class="connection"></div>
+</div>
+
+<script type="text/javascript">
+<?php
+// prepare json
+$removeConnectionData = new stdClass();
+$removeConnectionData->dialogId = $dialogHtmlId;
+$removeConnectionData->title = $title;
+$removeConnectionData->connectionId = $connection->getId();
+$removeConnectionData->postUrl = "/readydata/removeconnection";
+$removeConnectionJsonData = Zend_Json::encode($removeConnectionData);
+?>
+$('#<?=$buttonHtmlId;?>').data('data',<?=$removeConnectionJsonData;?>);
+</script>

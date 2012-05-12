@@ -1,0 +1,19 @@
+<?php
+$observedTeam = $this->sideBarData['observedTeam'];
+?>
+<div class="linkList"><!-- 
+<a
+	href="/profile/teamroster?id=<?=$observedTeam->getId();?>">
+<div class="link <?=$this->requestHelper()->isActive('teamroster')?>">
+Roster</div>
+</a>
+--> <a
+	href="/profile/teamschedule?id=<?=$observedTeam->getId();?>">
+<div class="link <?=$this->requestHelper()->isActive('teamschedule')?>">
+Schedule</div>
+</a> <a
+	href="/profile/teamconnection?id=<?=$observedTeam->getId();?>">
+<div
+	class="link <?=$this->requestHelper()->isActive('teamconnection')?>">
+Contracts</div>
+</a></div>

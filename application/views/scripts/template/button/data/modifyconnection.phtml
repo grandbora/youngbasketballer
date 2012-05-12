@@ -1,0 +1,28 @@
+<?php
+$buttonHtmlId = $this->modifyConnectionDialogData['buttonHtmlId'];
+$title = $this->modifyConnectionDialogData['title'];
+$header = $this->modifyConnectionDialogData['header'];
+$connection = $this->modifyConnectionDialogData['connection'];
+$dialogHtmlId = 'modifyConnectionDialog_' . $buttonHtmlId;
+?>
+<div class="modifyConnection dialog" id="<?=$dialogHtmlId?>">
+
+<div class="ui-state-error ui-corner-all header">
+<div class="ui-icon ui-icon-alert horizontal"></div>
+<div class="horizontal"><?=$header;?></div>
+</div>
+<div class="connection"></div>
+</div>
+
+<script type="text/javascript">
+<?php
+// output json
+$modifyConnectionData = new stdClass();
+$modifyConnectionData->dialogId = $dialogHtmlId;
+$modifyConnectionData->title = $title;
+$modifyConnectionData->connectionId = $connection->getId();
+$modifyConnectionData->postUrl = "/readydata/modifyconnection";
+$modifyConnectionJsonData = Zend_Json::encode($modifyConnectionData);
+?>
+$('#<?=$buttonHtmlId?>').data('data',<?=$modifyConnectionJsonData?>);
+</script>

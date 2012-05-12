@@ -1,0 +1,46 @@
+<?php
+$id = $this->userGridData['id'];
+$userList = $this->userGridData['userList'];
+$title = $this->userGridData['title'];
+
+$sectionHeader = $this->renderViewHelper('userViewHeader', 'withMarginTop')->sectionHeader($title);
+?>
+
+<?=$sectionHeader;?>
+<table class="modelListGrid userGrid">
+	<tr class="model user">
+		<th class="name firstCell">Name</th>
+		<th class="name">Team</th>
+	</tr>
+<?php
+foreach ($userList as $user)
+{
+    $teamIndicator = null;
+    if (null !== $user->getTeamId())
+        $teamIndicator = $this->renderViewHelper()->teamIndicator($user->getTeam());
+    
+    $button = null;
+    if (true === $user instanceof YBCore_Interface_Connectable)
+        $button = $this->renderButtonHelper()->createConnectionButton($this->loginUser, $user);
+    ?>
+    <tr class="model user">
+		<td class="name firstCell ui-widget-content ui-corner-left"><?=$this->renderViewHelper()->userIndicator($user, Zend_View_Helper_RenderViewHelper::IMAGETYPE_SQUARE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST);?></td>
+		<td class="name middleCell ui-widget-content"><?=$teamIndicator;?></td>
+		<td class="action lastCell ui-widget-content ui-corner-right"><?=$button;?></td>
+	</tr>
+    <?php
+}
+?>
+</table>
+<?php
+if (0 === $id)
+{
+    ?>
+<script type="text/javascript">
+$(document).ready(function() {
+	setUpUserGridButtons();
+});
+</script>
+<?php
+}
+?>

@@ -1,0 +1,25 @@
+<?php
+$id = $this->informationIndicatorData['id'];
+$content = $this->informationIndicatorData['content'];
+$htmlId = 'informationIndicator_' . $id;
+?>
+<div id="<?=$htmlId?>" class="informationIndicator ui-icon ui-icon-info"></div>
+<?php
+$informationIndicatorData = new stdClass();
+$informationIndicatorData->id = 'informationDialog_' . $htmlId;
+$informationIndicatorData->content = $content;
+$informationIndicatorJsonData = Zend_Json::encode($informationIndicatorData);
+?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#<?=$htmlId?>.informationIndicator').data('data',<?=$informationIndicatorJsonData;?>);
+<?php
+if (0 === $id)
+{
+    ?>
+    $('.informationIndicator').informationIndicator();
+    <?php
+}
+?>
+});
+</script>

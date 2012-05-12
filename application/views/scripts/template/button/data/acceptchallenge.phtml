@@ -1,0 +1,29 @@
+<?php
+$buttonHtmlId = $this->acceptChallengeDialogData['buttonHtmlId'];
+$game = $this->acceptChallengeDialogData['game'];
+$loginUser = $this->acceptChallengeDialogData['loginUser'];
+$dialogHtmlId = 'acceptChallengeDialog_' . $buttonHtmlId;
+
+$awayTeam = $this->renderViewHelper('horizontal')->teamIndicator($loginUser->getTeam(), false);
+$homeTeam = $this->renderViewHelper('horizontal')->teamIndicator($game->getHomeTeam(), false);
+$gameTime = (YBCore_Utility_DateTime::hasGameTimePassed() ? 'tomorrow' : 'today') . ' at ' . YBCore_Utility_DateTime::$gameTime;
+?>
+<div class="acceptChallenge dialog" id="<?=$dialogHtmlId?>">
+
+<div>By accepting this challenge, you are scheduling a game between <?=$awayTeam;?> and <?=$homeTeam;?></div>
+<div>This game will be played <?=$gameTime;?>. </div>
+
+</div>
+<script type="text/javascript">
+<?php
+// output json
+$acceptChallengeData = new stdClass();
+$acceptChallengeData->dialogId = $dialogHtmlId;
+$acceptChallengeData->title = "Accept Challenge";
+$acceptChallengeData->gameId = $game->getId();
+$acceptChallengeData->postUrl = "/readydata/acceptchallenge";
+$acceptChallengeData->successUrl ="/league/game";
+$acceptChallengeJsonData = Zend_Json::encode($acceptChallengeData);
+?>
+$('#<?=$buttonHtmlId?>').data('data',<?=$acceptChallengeJsonData?>);
+</script>

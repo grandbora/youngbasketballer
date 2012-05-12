@@ -1,0 +1,9 @@
+<div class="linkList"><a href="/league/challenge">
+<div class="link <?=$this->requestHelper()->isActive('challenge')?>">Challenge
+Wall</div>
+</a> <a href="/league/game">
+<div class="link <?=$this->requestHelper()->isActive('game')?>"><?=$this->textHelper()->getGameListLinkText()?></div>
+</a> <a href="/league/team">
+<div class="link <?=$this->requestHelper()->isActive('team')?>">Teams</div>
+</a>
+</div>

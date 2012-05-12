@@ -1,0 +1,14 @@
+<?php
+$buttonHtmlId = $this->withdrawChallengeDialogData['buttonHtmlId'];
+$game = $this->withdrawChallengeDialogData['game'];
+?>
+<script type="text/javascript">
+<?php
+// output json
+$withdrawChallengeData = new stdClass();
+$withdrawChallengeData->gameId = $game->getId();
+$withdrawChallengeData->postUrl = "/readydata/withdrawchallenge";
+$withdrawChallengeJsonData = Zend_Json::encode($withdrawChallengeData);
+?>
+$('#<?=$buttonHtmlId?>').data('data',<?=$withdrawChallengeJsonData?>);
+</script>

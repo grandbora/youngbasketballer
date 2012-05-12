@@ -1,0 +1,17 @@
+<?php
+$observedUser = $this->extensionData['observedUser']; 
+?>
+
+<?php if ($observedUser->getId() === $this->loginUser->getId()) : ?>
+<div class="fbInviteFriends" onclick="inviteFriends()"> + Invite Your
+	Friends</div>
+<script>
+function inviteFriends()
+{
+	FB.ui({ method: 'apprequests', 
+	       message: 'Would you like to join me in youngbasketballer where we can create our teams or play in our friends\' teams?'
+	});
+}
+</script>
+<div class="contact"><a href="http://www.facebook.com/profile.php?id=606501544" target="_blank"> + Contact / Feedback</a></div>
+<?php endif; ?>

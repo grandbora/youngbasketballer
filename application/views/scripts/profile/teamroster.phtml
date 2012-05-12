@@ -1,0 +1,21 @@
+<?php
+$sideBar = $this->renderViewHelper()->sidebar($this->observedTeam);
+$header = $this->renderViewHelper()->header($this->observedTeam);
+
+// call viewhelper->teamRoster HERE
+?>
+<div class="sideBar horizontal"><?=$sideBar?></div>
+<div class="mainContent horizontal">
+<div class="profileHeader"><?=$header?></div>
+
+<div class="coach">
+<?php
+foreach ($this->observedTeam->getCoachList() as $coach)
+    echo $this->renderViewHelper()->userIndicator($coach)?>
+</div>
+<div class="player">
+<?php
+foreach ($this->observedTeam->getPlayerList() as $player)
+    echo $this->renderViewHelper()->userIndicator($player)?>
+</div>
+</div>

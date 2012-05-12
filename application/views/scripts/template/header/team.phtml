@@ -1,0 +1,27 @@
+<?php
+$observedTeam = $this->headerData['observedTeam'];
+$teamIndicator = $this->renderViewHelper()->teamIndicator($observedTeam, false);
+$coachList = $observedTeam->getCoachList();
+?>
+
+<?=$teamIndicator?>
+
+<div class="title"><span class="description">
+Owned by 
+<?=$this->renderViewHelper()->userIndicator($observedTeam->getOwner(), Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST);?>
+</span>
+<?php
+if (false === empty($coachList[0]))
+{
+    ?>
+ <span class="description">
+Coached by 
+<?=$this->renderViewHelper()->userIndicator($coachList[0], Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST);?>
+</span>
+<?php
+}
+?>
+<div>
+<?=$this->renderViewHelper()->teamRoster($observedTeam);?>
+</div>
+</div>

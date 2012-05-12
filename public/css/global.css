@@ -1,0 +1,512 @@
+html,body {
+	background-color: #FDFDFF;
+	color: #333333;
+	margin: 0px;
+	padding: 0px;
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-size: 11px;
+	line-height: 1.28;
+	height: 100%;
+}
+
+/* Override jquery font family */
+.ui-widget {
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-size: 11px;
+}
+
+.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button
+	{
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-size: 11px;
+}
+
+table,table tr,table tr td {
+	margin: 0px;
+	padding: 0p;
+}
+
+a,a:HOVER,a:VISITED,a:ACTIVE {
+	text-decoration: none;
+	cursor: pointer;
+	color: #333333;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	margin: 0;
+	padding: 0;
+}
+
+.dialog,.ui-dialog.preventClose .ui-dialog-titlebar-close,.ui-dialog.hideTitle .ui-dialog-titlebar
+	{
+	display: none;
+}
+
+.dialog.loader {
+	background-image: url("images/loading.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.dialog .header {
+	padding: 5px;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.dialog .helperLine {
+	padding-top: 2px;
+}
+
+.horizontal {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.helperLine {
+	font-style: italic;
+}
+
+.attention {
+	color: red;
+}
+
+.watermarked {
+	color: #333333;
+}
+
+.watermark {
+	color: #CCCCCC;
+}
+
+.section {
+	margin-bottom: 10px;
+}
+
+.sectionHeader {
+	background-color: #F2F2F2;
+	border-bottom: medium none;
+	border-top: 1px solid #E2E2E2;
+	padding: 4px 5px 5px;
+	margin-bottom: 10px;
+}
+
+.sectionHeader.withMarginTop {
+	margin-top: 15px;
+}
+
+/*ModelList Table rules*/
+.modelListGrid {
+	width: 100%;
+	border-spacing: 0px 3px;
+}
+
+.modelListGrid .model th {
+	text-align: left
+}
+
+.modelListGrid .model td {
+	height: 32px;
+	cursor: pointer;
+	background-color: #FAFAFA;
+	padding: 1px;
+	text-align: left
+}
+
+.modelListGrid .model:hover td,.modelListGrid .model.noData:hover td {
+	background: #C0E0FF;
+	border-color: #D8DFEA;
+}
+
+.modelListGrid .model.noData td {
+	height: 20px;
+}
+
+.modelListGrid .model:hover .indicatorLink {
+	color: #000088;
+}
+
+.modelListGrid .model .firstCell {
+	border-right: none;
+	padding-left: 15px;
+}
+
+.modelListGrid .model .middleCell {
+	border-left: none;
+	border-right: none;
+}
+
+.modelListGrid .model .lastCell {
+	border-left: none;
+	padding-right: 15px;
+}
+
+.modelListGrid .model .name {
+	width: 100px;
+}
+
+.modelListGrid .model .action {
+	text-align: center;
+	width: 6px;
+}
+
+.modelListGrid .model .loader {
+	background-image: url("images/loading_fb_small.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+	min-width: 60px;
+}
+
+/* Common rules for templates*/
+/*informationIndicator*/
+.informationIndicator {
+	cursor: pointer;
+	float: right;
+}
+
+/*indicator common*/
+.indicatorLink {
+	text-decoration: none;
+	cursor: pointer;
+	color: #33AAFF;
+}
+
+.indicatorLink:hover {
+	text-decoration: underline;
+}
+
+/*userIndicator*/
+.userIndicator {
+	overflow: hidden;
+}
+
+a.userIndicator {
+	line-height: 23px;
+}
+
+.userIndicator.square,.userIndicator.small,.userIndicator.square img,.userIndicator.small img
+	{
+	max-width: 23px;
+	max-height: 23px;
+}
+
+.userIndicator.normal,.userIndicator.normal img {
+	max-width: 60px;
+	max-height: 60px;
+}
+
+.userIndicator.large,.userIndicator.large img {
+	max-width: 160px;
+	max-height: 160px;
+}
+
+.userIndicator.normal img,.userIndicator.large img {
+	
+}
+
+.userIndicator.small img,.userIndicator.square img {
+	
+}
+
+.userIndicator.coach img { /*background-color: #0033BB;*/
+	
+}
+
+.userIndicator.player img { /*background-color: #3366FF;*/
+	
+}
+
+.userIndicator.teamOwner img { /*background-color: #008833;*/
+	
+}
+
+.userIndicator.withName {
+	width: auto;
+	max-width: none;
+	max-height: none;
+}
+
+/*teamIndicator*/
+.teamIndicator {
+	vertical-align: baseline;
+}
+
+/*button*/
+.button {
+	width: 65px;
+}
+
+.button.ui-button .ui-button-text {
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+/*button dialog*/
+.dialog .connection {
+	padding-top: 10px;
+}
+
+/* calendar/weekView */
+.eventList {
+	height: 90px;
+	text-align: center;
+}
+
+.eventList .eventDay {
+	width: 63px;
+	height: 90px;
+	cursor: pointer;
+}
+
+.eventList .eventDay.today {
+	background: #E0EEFF;
+}
+
+.eventList .eventDay.freeDay {
+	height: 18px;
+}
+
+.eventList .eventDay:hover {
+	background: #C0E0FF;
+	border-color: #D8DFEA;
+}
+
+.eventList .eventDay .dayNameHeader {
+	text-align: center;
+	padding: 2px;
+}
+
+.eventList .eventDay .eventTitle {
+	padding-top: 1px;
+	text-align: center;
+}
+
+.eventList .eventDay.freeDay .eventTitle {
+	padding-top: 4px;
+	color: #C0DDDD;
+}
+
+.eventList .eventDay.freeDay:hover .eventTitle {
+	color: #408888;
+}
+
+.eventList .eventDay .game {
+	color: #CC0000;
+}
+
+.eventList .eventDay .teamTraining {
+	color: #336633;
+}
+
+.eventList .eventDay .individualTraining {
+	color: #330066;
+}
+
+.eventDayDialog {
+	font-size: 13px;
+}
+
+/* connectionListView, requestListView */
+.connectionHeader.sectionHeader {
+	margin-bottom: 5px;
+}
+
+.connectionListView,.requestListView {
+	width: 100%;
+	border-spacing: 0px 3px;
+}
+
+.connection,.request {
+	margin: 3px;
+	padding: 3px;
+	cursor: pointer;
+}
+
+.connection td,.request td {
+	padding: 1px 1px;
+	height: 32px;
+	background-color: #FAFAFA;
+	background-image: none;
+}
+
+.connection.expense td {
+	background-color: #FFF5F5;
+}
+
+.connection.income td {
+	background-color: #F5FFF5;
+}
+
+.connection.noData td,.request.noData td {
+	text-align: left;
+	height: 20px;
+}
+
+.connection:hover td,.connection.income:hover td,.connection.expense:hover td,.request:hover td
+	{
+	background-color: #C0E0FF;
+	border-color: #D8DFEA;
+}
+
+.connection:hover .indicatorLink,.request:hover .indicatorLink {
+	color: #000088;
+}
+
+.connection .buttonCell,.request .buttonCell {
+	width: 6px;
+	text-align: center;
+}
+
+.connection .buttonCell.ui-corner-left,.request .buttonCell.ui-corner-left
+	{
+	border-right: none;
+}
+
+.connection .buttonCell.ui-corner-right,.request .buttonCell.ui-corner-right
+	{
+	border-left: none;
+}
+
+.connection .buttonCell.loader,.request .buttonCell.loader {
+	background-image: url("images/loading_fb_small.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+	min-width: 60px;
+}
+
+.connection .participant,.request .participant {
+	text-align: left;
+	vertical-align: middle;
+	border-left: none;
+	border-right: none;
+}
+
+.connection .day {
+	text-align: left;
+	border-left: none;
+	border-right: none;
+	max-width: 120px;
+}
+
+.connection .description {
+	text-align: center;
+	border-left: none;
+	border-right: none;
+}
+
+/* ChallengeList && GameList*/
+.challengeView .challengeViewHeader {
+	margin-top: 15px;
+}
+
+.gameGrid {
+	width: 100%;
+	border-spacing: 0px 3px;
+}
+
+.gameGrid .game td {
+	height: 32px;
+	cursor: pointer;
+	background-color: #FAFAFA;
+	padding: 1px;
+}
+
+.gameGrid .game.ownTeam td {
+	background: #FFF5F5;
+}
+
+.gameGrid .game.noData td {
+	text-align: left;
+	height: 20px;
+}
+
+.gameGrid .game:hover td,.gameGrid .game.ownTeam:hover td,.gameGrid .game.noData:hover td
+	{
+	background: #C0E0FF;
+	border-color: #D8DFEA;
+}
+
+.gameGrid .game:hover .indicatorLink {
+	color: #000088;
+}
+
+.gameGrid .game:hover .versusCell {
+	color: #000088;
+}
+
+.gameGrid .game .nameCell {
+	border-right: none;
+	padding-left: 15px;
+	width: 100px;
+}
+
+.gameGrid .game .rosterCell {
+	border-left: none;
+	border-right: none;
+}
+
+.gameGrid .game .actionCell {
+	border-left: none;
+	text-align: center;
+	width: 80px;
+}
+
+.gameGrid .game .homeCell, .gameGrid .game .awayCell {
+	text-align: center;
+	width: 5%;
+}
+
+.gameGrid .game .homeCell {
+	border-right: none;
+	padding-left: 10px;
+}
+
+.gameGrid .game .awayCell {
+	border-left: none;
+	padding-right: 10px;
+}
+
+.gameGrid .game .awayRosterCell, .gameGrid .game .homeRosterCell {
+	border-left: none;
+	border-right: none;
+	text-align: center;
+	min-width: 40%;
+}
+
+.gameGrid .game .homeRosterCell {
+}
+.gameGrid .game .awayRosterCell{
+}
+
+.gameGrid .game .versusCell {
+	border-left: none;
+	border-right: none;
+	text-align: center;
+	width: 20px;
+	color: #AAAAAA;
+}
+
+.challengeView .toggleChallenge {
+	float: right;
+}
+
+.challengeView .toggleChallenge .createChallengeButton {
+	width: 150px;
+}
+
+/* GameArchive*/
+.gameArchiveGrid.modelListGrid .result.win td {
+	background: #F5FFF5;
+}
+
+.gameArchiveGrid.modelListGrid .result.lose td {
+	background: #FFF5F5;
+}
+
+.modelListGrid .model:hover td,.modelListGrid .model.result.lose:hover td,.modelListGrid .model.result.win:hover td
+	{
+	background: #C0E0FF;
+	border-color: #D8DFEA;
+}
+/* EOF Common rules*/
+/**/

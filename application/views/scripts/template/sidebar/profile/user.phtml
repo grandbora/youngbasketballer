@@ -1,0 +1,24 @@
+<?php
+$observedUser = $this->sideBarData['observedUser'];
+$userIndicator = $this->renderViewHelper()->userIndicator($observedUser, Zend_View_Helper_RenderViewHelper::IMAGETYPE_LARGE, Zend_View_Helper_RenderViewHelper::NAMETYPE_NONE,true,true);
+?>
+
+<?=$userIndicator;?>
+<div class="linkList"><a
+	href="/profile/userschedule?id=<?=$observedUser->getId();?>">
+<div class="link <?=$this->requestHelper()->isActive('userschedule')?>">
+Schedule</div>
+</a>
+<?php
+if ($observedUser instanceof YBCore_Model_User_Player || $observedUser instanceof YBCore_Model_User_Coach)
+{
+    ?>
+<a
+	href="/profile/userconnection?id=<?=$observedUser->getId();?>">
+<div class="link <?=$this->requestHelper()->isActive('userconnection')?>">
+Contracts</div>
+</a>
+<?php
+}
+?>
+</div>

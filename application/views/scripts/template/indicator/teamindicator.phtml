@@ -1,0 +1,28 @@
+<?php
+$team = $this->teamIndicatorData['team'];
+$enableLink = $this->teamIndicatorData['enableLink'];
+$cssClass = $this->templateCssClass;
+if (true === $enableLink)
+    $cssClass .= ' indicatorLink';
+?>
+
+<?php
+if (true === $enableLink)
+{
+    ?>
+<a class="teamIndicator"
+	href="/profile/teamschedule?id=<?=$team->getId();?>">
+    <?php
+}
+?>
+<div class="teamIndicator <?=$cssClass?>">
+<?=$team->getName();?>
+</div>
+<?php
+if (true === $enableLink)
+{
+    ?>
+</a>
+<?php
+}
+?>

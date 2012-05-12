@@ -1,0 +1,57 @@
+<?php
+$challengeList = $this->challengeGridData['challengeList'];
+
+$infoText = $this->textHelper()->getGameViewInfoText($this->loginUser);
+$sectionHeader = $this->renderViewHelper('challengeViewHeader')->sectionHeader("Open Challenges", $infoText);
+?>
+
+<?=$sectionHeader;?>
+
+<table class="gameGrid">
+<?php
+if (false === empty($challengeList))
+{
+    ?>
+	<tr class="game">
+		<th colspan="2">Opponent</th>
+		<th></th>
+	</tr>
+<?php
+    foreach ($challengeList as $game)
+    {
+        $rowClassName = null;
+        $actionButton = null;
+        if ($game->getHomeTeamId() === $this->loginUser->getTeamId())
+        {
+            $rowClassName = "ownTeam";
+            $actionButton = $this->renderButtonHelper()->withdrawChallengeButton($this->loginUser, $game);
+        } else
+        {
+            $actionButton = $this->renderButtonHelper()->acceptChallengeButton($this->loginUser, $game);
+        }
+        ?>
+    <tr class="game <?=$rowClassName;?>">
+		<td class="nameCell ui-widget-content ui-corner-left"><?=$this->renderViewHelper()->teamIndicator($game->getHomeTeam());?></td>
+		<td class="rosterCell ui-widget-content"><?=$this->renderViewHelper()->teamRoster($game->getHomeTeam());?></td>
+		<td class="actionCell ui-widget-content ui-corner-right"><?=$actionButton?></td>
+	</tr>
+    <?php
+    }
+} else
+{
+    ?>
+<tr class="game noData helperLine">
+		<td>There aren't any open challenges at the moment.</td>
+	</tr>
+<?php
+}
+?>
+</table>
+<div class="toggleChallenge">
+<?=$this->renderButtonHelper()->toggleChallengeButton($this->loginUser);?>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	setUpChallengeGridButtons();
+});
+</script>

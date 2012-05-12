@@ -1,0 +1,11 @@
+<?php
+$buttonHtmlId = $this->createChallengeDialogData['buttonHtmlId'];
+?>
+<script type="text/javascript">
+<?php
+$createChallengeData = new stdClass();
+$createChallengeData->postUrl = "/readydata/createchallenge";
+$createChallengeJsonData = Zend_Json::encode($createChallengeData);
+?>
+$('#<?=$buttonHtmlId?>').data('data',<?=$createChallengeJsonData?>);
+</script>

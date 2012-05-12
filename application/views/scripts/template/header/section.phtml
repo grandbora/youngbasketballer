@@ -1,0 +1,13 @@
+<?php
+$title = $this->sectionHeaderData['title'];
+$informationText = $this->sectionHeaderData['informationText'];
+$cssClass = $this->templateCssClass;
+
+$informationIndicator = null;
+if (null != $informationText)
+    $informationIndicator = $this->renderViewHelper()->informationIndicator($informationText);
+?>
+
+<div class="<?=$cssClass?> sectionHeader">
+<h4><?=$title;?><?=$informationIndicator?></h4>
+</div>

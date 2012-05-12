@@ -1,0 +1,171 @@
+<?php
+$id = $this->connectionListViewData['id'];
+$connectionList = $this->connectionListViewData['connectionList'];
+$observedModel = $this->connectionListViewData['observedModel'];
+$connectionStatus = $this->connectionListViewData['connectionStatus'];
+
+$title = $this->textHelper()->getConnectionTitle($connectionStatus);
+$sectionHeader = $this->renderViewHelper('connectionHeader')->sectionHeader($title);
+?>
+
+<?=$sectionHeader;?>
+<table cellpadding="0" cellspacing="0" border="0"
+	class="connectionListView">
+	<?php
+if (false === empty($connectionList))
+{
+    ?>
+	<tr class="connection">
+		<th class="buttonCell"></th>
+		<th class="participant">Participant</th>
+		<th class="day">Training days</th>
+		<th class="description">Salary</th>
+	</tr>
+		<?php
+}
+
+for ($i = 0; $i < count($connectionList); $i++)
+{
+    $connection = $connectionList[$i];
+    $rowHtmlId = 'connection_' . $id . '_' . $i;
+    $rowCssClass = $this->textHelper()->getConnectionRowCssClass($connection, $observedModel);
+    
+    $participant = null;
+    if (true === $observedModel instanceof YBCore_Model_User_Abstract && YBCore_Model_Connection_Mapper_Connection::TYPE_TEAM === $connection->getType())
+    {
+        $participantTeam = $connection->getEmployer();
+        $participant = $this->renderViewHelper("horizontal")->teamIndicator($participantTeam);
+        $participantTitleIndicator = $this->renderViewHelper("horizontal")->teamIndicator($participantTeam, false);
+    } else
+    {
+        if (true === $observedModel instanceof YBCore_Model_User_Player || true === $observedModel instanceof YBCore_Model_Team)
+            $participantUser = $connection->getEmployee();
+        elseif ($observedModel instanceof YBCore_Model_User_Coach)
+            $participantUser = $connection->getEmployer();
+        $participant = $this->renderViewHelper()->userIndicator($participantUser, Zend_View_Helper_RenderViewHelper::IMAGETYPE_SQUARE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST);
+        $participantTitleIndicator = $this->renderViewHelper()->userIndicator($participantUser, Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST, 
+        false);
+    
+    }
+    
+    $connectionJsonData = new stdClass();
+    $connectionJsonData->id = $rowHtmlId;
+    if (true === $observedModel instanceof YBCore_Model_User_Abstract && $observedModel->getId() === $this->loginUser->getId())
+    {
+        $observedModelTitleIndicator = null;
+        $connectionJsonData->title = 'You and ' . $participantTitleIndicator;
+    } else
+    {
+        if (true === $observedModel instanceof YBCore_Model_User_Abstract)
+        {
+            $observedModelTitleIndicator = $this->renderViewHelper()->userIndicator($observedModel, Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, 
+            Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST, false);
+        } elseif (true === $observedModel instanceof YBCore_Model_Team)
+        {
+            $observedModelTitleIndicator = $this->renderViewHelper("horizontal")->teamIndicator($observedModel, false);
+        }
+        
+        $connectionJsonData->title = $observedModelTitleIndicator . ' and ' . $participantTitleIndicator;
+    }
+    $connectionJsonData->content = $this->textHelper()->getConnectionDescription($connection, $this->loginUser, $observedModel, $observedModelTitleIndicator, $participantTitleIndicator);
+    $connectionJsonData->noDataText = $this->textHelper()->getConnectionListNoDataText($observedModelTitleIndicator, $connectionStatus);
+    $connectionJsonDataString = Zend_Json::encode($connectionJsonData);
+    ?>
+    <tr class="connection <?=$rowCssClass;?>" id="<?=$rowHtmlId;?>">
+		<td class="buttonCell ui-widget-content ui-corner-left">
+		<?php
+    $button = null;
+    if (true === $observedModel instanceof YBCore_Model_User_Abstract || true === $this->loginUser instanceof YBCore_Model_User_TeamOwner)
+        // renders cancel buttons for TO
+        $button = $this->renderButtonHelper()->removeConnectionButton($this->loginUser, $observedModel, $connection);
+    elseif (true === $observedModel instanceof YBCore_Model_Team && true === $this->loginUser instanceof YBCore_Model_User_Coach && true === $connection instanceof YBCore_Model_Connection_Contract)
+        // renders dismiss buttons for HC
+        $button = $this->renderButtonHelper()->createConnectionButton($this->loginUser, $connection->getEmployee());
+    ?>
+    <?=$button;?>
+
+		</td>
+		<td class="participant ui-widget-content"><?=$participant;?></td>
+		<td class="day ui-widget-content">
+<?php
+    $connectionDayList = $connection->getDayList();
+    $connectionDayListCount = count($connectionDayList);
+    for ($dayIterator = 0; $dayIterator < $connectionDayListCount; $dayIterator++)
+    {
+        $connectionDay = $connectionDayList[$dayIterator];
+        ?>
+<div class="horizontal"><?=$connectionDay->getDayName();?></div>
+    <?php
+        if ($connectionDayListCount - 1 !== $dayIterator)
+        {
+            ?>
+            ,
+            <?php
+        }
+    }
+    ?>
+</td>
+		<td class="description ui-widget-content">
+		<div><?=$connection->getSalary();?>$ per training</div>
+		</td>
+		<td class="buttonCell ui-widget-content ui-corner-right">
+		<?php
+    $button = null;
+    if (true === $observedModel instanceof YBCore_Model_User_Abstract)
+        $button = $this->renderButtonHelper()->modifyConnectionButton($this->loginUser, $observedModel, $connection);
+    ?>
+        <?=$button;?>
+</td>
+	</tr>
+	<script type="text/javascript"> 
+	$('#<?=$rowHtmlId;?>.connection').data('data',<?=$connectionJsonDataString;?>);
+</script>
+<?php
+}
+if (true === empty($connectionList))
+{
+    $observedModelIndicator = null;
+    if (true === $observedModel instanceof YBCore_Model_User_Abstract && $observedModel->getId() !== $this->loginUser->getId())
+        $observedModelIndicator = $this->renderViewHelper()->userIndicator($observedModel, Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST, false);
+    if (true === $observedModel instanceof YBCore_Model_Team)
+        $observedModelIndicator = $this->renderViewHelper("horizontal")->teamIndicator($observedModel, false);
+    
+    $noDataText = $this->textHelper()->getConnectionListNoDataText($observedModelIndicator, $connectionStatus);
+    ?>
+    	<tr class="connection noData helperLine">
+		<td><?=$noDataText?></td>
+	</tr>
+    <?php
+}
+?>
+</table>
+<?php
+// loading once is enough
+// since this code runs on ready we can not move it to external file
+if (0 === $id)
+{
+    ?>
+<script type="text/javascript">
+$(document).ready(function() {
+<?php
+    $observeUserAlertCase = true === $observedModel instanceof YBCore_Model_User_Abstract && $observedModel->getId() === $this->loginUser->getId();
+    $observeTeamAlertCase = true === $observedModel instanceof YBCore_Model_Team && $observedModel->getOwnerId() === $this->loginUser->getId();
+    if (true === empty($connectionList) && ($observeUserAlertCase || $observeTeamAlertCase))
+    {
+        $loginUserIndicator = $this->renderViewHelper()->userIndicator($this->loginUser, Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST, false);
+        $emptyConnectionListData = new stdClass();
+        $emptyConnectionListData->title = "Hi " . $loginUserIndicator;
+        $emptyConnectionListData->content = $this->textHelper()->getEmptyConnectionListMessage($this->loginUser);
+        $emptyConnectionListJsonData = Zend_Json::encode($emptyConnectionListData);
+        ?>
+        $('.connectionHeader.sectionHeader').connectionListView('alertEmptyConnectionList',<?=$emptyConnectionListJsonData?>);
+<?php
+    }
+    ?>
+	$('.connectionListView').connectionListView('.connectionList .connection:not(:first-child)');
+	setUpConnectionListButtons();
+});
+</script>
+<?php
+}
+?>

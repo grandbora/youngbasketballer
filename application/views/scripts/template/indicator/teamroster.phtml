@@ -1,0 +1,13 @@
+<?php
+$roster = $this->teamRosterData['roster'];
+$imageType = $this->teamRosterData['imageType'];
+$cssClass = $this->templateCssClass;
+
+for ($i = 0; $i < 6; $i++) {
+    if (true === isset($roster[$i])) {
+        echo $this->renderViewHelper($cssClass)->userIndicator($roster[$i], $imageType);
+    }else {
+        echo $this->renderViewHelper($cssClass)->userIndicatorDummy($imageType);
+    }
+}
+?>

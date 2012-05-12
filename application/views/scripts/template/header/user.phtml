@@ -1,0 +1,38 @@
+<?php
+$user = $this->headerData['observedUser'];
+$observedUserTeam = $this->headerData['observedUserTeam'];
+
+$jobDescription = '';
+$title = $this->textHelper()->getUserTitle($user);
+if (null !== $observedUserTeam)
+    $jobDescription = $title . ' @ ' . $this->renderViewHelper("horizontal")->teamIndicator($observedUserTeam);
+else
+    $jobDescription = $title . ' , free agent';
+$jobDescription = '<span class="description">' . $jobDescription . '</span>';
+
+$individualContractorString = '';
+if ($user instanceof YBCore_Interface_Connectable)
+{
+    $individualContractorList = $user->getIndividualContractorList();
+    if (false === empty($individualContractorList))
+    {
+        if ($user instanceof YBCore_Model_User_Player)
+            $individualContractorString .= 'Trained by ';
+        elseif ($user instanceof YBCore_Model_User_Coach)
+            $individualContractorString .= 'Trains ';
+        
+        $individualContractorStringList = array();
+        foreach ($individualContractorList as $individualContractor)
+            $individualContractorStringList[] = $this->renderViewHelper()->userIndicator($individualContractor, Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, 
+            Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST);
+        $individualContractorString .= implode(' , ', $individualContractorStringList);
+        
+        $individualContractorString = '<span class="description">' . $individualContractorString . '</span>';
+    }
+}
+?>
+
+<?php
+echo $this->renderViewHelper()->userIndicator($user, Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, Zend_View_Helper_RenderViewHelper::NAMETYPE_FULL, true, true);
+?>
+<div class="title"><?=$jobDescription;?><?=$individualContractorString;?></div>

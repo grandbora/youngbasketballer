@@ -1,0 +1,8 @@
+<?php
+$sideBar = $this->render('template/sidebar/league.phtml');
+$gameGrid = $this->renderViewHelper()->gameGrid($this->gameList);
+?>
+<div class="sideBar horizontal"><?=$sideBar?></div>
+<div class="mainContent horizontal">
+<div class="gameView section"><?=$gameGrid?></div>
+</div>

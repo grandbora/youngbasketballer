@@ -1,0 +1,12 @@
+<?php
+$sideBar = $this->renderViewHelper()->sidebar($this->observedUser);
+$header = $this->renderViewHelper()->header($this->observedUser);
+$contractList = $this->renderViewHelper()->connectionListView($this->observedUser, YBCore_Model_Connection_Mapper_Contract::STATUS);
+$offerList = $this->renderViewHelper()->connectionListView($this->observedUser, YBCore_Model_Connection_Mapper_Offer::STATUS);
+?>
+<div class="sideBar horizontal"><?=$sideBar?></div>
+<div class="mainContent horizontal">
+<div class="profileHeader"><?=$header?></div>
+<div class="connectionList section"><?=$contractList?></div>
+<div class="connectionList section"><?=$offerList?></div>
+</div>

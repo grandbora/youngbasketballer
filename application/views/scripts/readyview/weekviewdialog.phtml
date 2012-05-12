@@ -1,0 +1,44 @@
+<?php
+foreach ($this->eventList as $event)
+{
+    if (true === is_subclass_of($event['class'], 'YBCore_Model_Event_Game_Abstract'))
+    {
+        $game = new YBCore_Model_Event_Game_ScheduledGame($event['id']);
+        $textArray = $this->textHelper()->getEventTextDataList($game);
+        $homeTeamIndicator = $this->renderViewHelper('horizontal')->teamIndicator($game->getHomeTeam());
+        $awayTeamIndicator = $this->renderViewHelper('horizontal')->teamIndicator($game->getAwayTeam());
+        ?>
+<div class="<?=$textArray['cssClass'];?>">
+      @ <?=$game->getTime();?> <?=$textArray['title']?> : <?=$homeTeamIndicator;?> vs <?=$awayTeamIndicator;?>  
+      </div>
+<?php
+    } elseif ('YBCore_Model_Event_Training' === $event['class'])
+    {
+        $contract = new YBCore_Model_Connection_Contract($event['contractId']);
+        $contractDay = new YBCore_Model_Connection_Day();
+        $contractDay->setDayId($event['dayId']);
+        $training = new YBCore_Model_Event_Training($contract, $contractDay);
+        $textArray = $this->textHelper()->getEventTextDataList($training);
+        
+        $participantList = $training->getParticipantList();
+        $participantIndicatorList = array();
+        switch ($training->getType())
+        {
+            case YBCore_Model_Event_Training::TYPE_TEAMTRAINING:
+                $participantIndicatorList[] = $this->renderViewHelper('horizontal')->teamIndicator($participantList[0]);
+                break;
+            case YBCore_Model_Event_Training::TYPE_INDIVIDUALTRAINING:
+                $participantIndicatorList[] = $this->renderViewHelper()->userIndicator($participantList[0], Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, 
+                Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST);
+                $participantIndicatorList[] = $this->renderViewHelper()->userIndicator($participantList[1], Zend_View_Helper_RenderViewHelper::IMAGETYPE_NONE, 
+                Zend_View_Helper_RenderViewHelper::NAMETYPE_FIRST);
+                break;
+        }
+        ?>
+<div class="<?=$textArray['cssClass'];?>">
+      @ <?=$training->getTime();?> <?=$textArray['title'];?> : <?=$participantIndicatorList[0];?> <?=true === empty($participantIndicatorList[1]) ? "" : ",";?> <?=$participantIndicatorList[1];?>  
+      </div>
+<?php
+    }
+}
+?>
